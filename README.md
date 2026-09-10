@@ -32,11 +32,11 @@ Nenhuma chave ou serviço externo é necessário para o funcionamento. O projeto
 
 - `data/site.ts`: dados profissionais, WhatsApp, Instagram, localidades, procedimentos, galeria e metadados.
 - `components/`: capítulos editoriais, menu acessível, animações e galeria com ampliação e comparação por teclado e controle deslizante.
-- `app/`: estilos, favicon PB em SVG/ICO, Apple icon e retratos sociais.
+- `app/`: estilos, favicon PB em SVG/ICO, Apple icon e imagem social fornecida e otimizada em JPEG.
 - `public/images/`: imagens reais fornecidas, otimizadas para WebP. As fotografias clínicas mantêm os registros e marcas originais, sem retoque de resultado.
 - `public/fonts/`: fontes locais e respectivas licenças.
 
-Identidade em areia, café e dourado. Abertura cinematográfica e seção 05 — Sua experiência com fotografia e jornada de atendimento. Os demais capítulos preservam a composição editorial original: essência, apresentação da profissional, cuidados, galeria em grade, Instagram e contato. Layout responsivo com suporte a preferência de movimento reduzido. A comparação é uma visualização dos recortes das fotografias originais; ângulo, luz e enquadramento podem variar.
+Identidade em areia, café e dourado. Abertura cinematográfica e seção 05 — Sua experiência com fotografia e jornada de atendimento. Os demais capítulos preservam a composição editorial original: essência, apresentação da profissional, cuidados, galeria em grade, Instagram e contato. Layout responsivo com entrada do hero disponível antes do JavaScript, aparições suaves ao rolar e suporte a preferência de movimento reduzido. Fontes locais pré-carregadas com fallback e troca imediata. A comparação é uma visualização dos recortes das fotografias originais; ângulo, luz e enquadramento podem variar.
 
 ## Dados usados
 
