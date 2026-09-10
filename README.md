@@ -1,6 +1,6 @@
 # Dra. Paula Brito
 
-Site editorial de harmonização facial para a Dra. Paula Brito, em Recife e Surubim. Projeto único em Next.js, preparado para importar no Vercel.
+Site institucional de harmonização facial para a Dra. Paula Brito, em Recife e Surubim. Projeto único em Next.js, preparado para importar no Vercel.
 
 ## Desenvolvimento
 
@@ -36,7 +36,7 @@ Nenhuma chave ou serviço externo é necessário para o funcionamento. O projeto
 - `public/images/`: imagens reais fornecidas, otimizadas para WebP. As fotografias clínicas mantêm os registros e marcas originais, sem retoque de resultado.
 - `public/fonts/`: fontes locais e respectivas licenças.
 
-Identidade em areia, café e dourado. Abertura cinematográfica em tela cheia, manifesto tipográfico, cuidados com imagens contextuais, galeria horizontal com navegação por teclado e toque, apresentação da profissional e jornada de atendimento. Layout responsivo com suporte a preferência de movimento reduzido. A comparação é uma visualização dos recortes das fotografias originais; ângulo, luz e enquadramento podem variar.
+Identidade em areia, café e dourado. Abertura cinematográfica e seção 05 — Sua experiência com fotografia e jornada de atendimento. Os demais capítulos preservam a composição editorial original: essência, apresentação da profissional, cuidados, galeria em grade, Instagram e contato. Layout responsivo com suporte a preferência de movimento reduzido. A comparação é uma visualização dos recortes das fotografias originais; ângulo, luz e enquadramento podem variar.
 
 ## Dados usados
 
