@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import type { CSSProperties } from 'react';
 import { site } from '@/data/site';
 import './globals.css';
-import './signature.css';
 import './campaign.css';
 import './essence.css';
 const metadataBase = new URL(site.seo.url || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000'));

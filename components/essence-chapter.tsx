@@ -1,17 +1,7 @@
 'use client';
 import Image from 'next/image';
-import { ArrowUpRight } from 'lucide-react';
-const pillars = [
- ['01', 'Identidade', 'Seus traços e sua história são o ponto de partida.'],
- ['02', 'Equilíbrio', 'Um olhar para o conjunto, com atenção a cada detalhe.'],
- ['03', 'Naturalidade', 'Valorizar a sua expressão, preservando o que é seu.'],
-];
-export function EssenceChapter(){
- return <section id="manifesto" className="essence-editorial" aria-labelledby="essence-title">
-  <div className="essence-topline"><p>01 / A ESSÊNCIA</p><span/><p>BELEZA QUE FAZ SENTIDO PARA VOCÊ</p></div>
-  <div className="essence-stage"><div className="essence-photo-wrap" data-reveal><figure className="essence-photo"><Image src="/images/paula-sorriso.webp" alt="Dra. Paula Brito sorrindo" fill sizes="(max-width:700px) 88vw, 40vw"/></figure><span className="essence-photo-note">Natural em cada detalhe.</span><span className="essence-frame" aria-hidden="true"/></div>
-   <div className="essence-copy" data-reveal><p className="essence-prelude">A beleza começa no que é seu.</p><h2 id="essence-title">Não é sobre<br/>mudar quem<br/><em>você é.</em></h2><p className="essence-description">É sobre olhar para si com mais carinho. Valorizar seus traços, respeitar suas proporções e realçar a beleza que já existe em você.</p><a className="essence-link" href="#sobre">Conheça o olhar por trás do cuidado <span><ArrowUpRight size={23}/></span></a></div>
-  </div>
-  <div className="essence-values">{pillars.map(([number,title,copy])=><article key={number} data-reveal><span>{number}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div>
- </section>;
-}
+export function EssenceChapter(){return <section id="manifesto" className="essence-editorial" aria-labelledby="essence-title">
+ <div className="section-topline"><p>01 — ESSÊNCIA</p><span/><p>O QUE TORNA VOCÊ ÚNICA</p></div>
+ <div className="essence-statement" data-reveal><span className="essence-asterisk" aria-hidden="true">✳</span><h2 id="essence-title">Existe uma beleza<br/>que só <em>você tem.</em></h2><span className="essence-sideword">PRESERVAR. VALORIZAR. REALÇAR.</span></div>
+ <div className="essence-foot"><figure className="essence-small-photo" data-reveal><Image src="/images/paula-natural.webp" alt="Dra. Paula Brito" fill sizes="(max-width:700px) 25vw, 130px"/></figure><p data-reveal>Ela está nos seus traços, na sua expressão e na sua história. A harmonização começa por reconhecer tudo isso — e cuidar de cada detalhe com intenção.</p><div className="essence-words" data-reveal><span>Identidade.</span><span>Equilíbrio.</span><span>Naturalidade.</span></div></div>
+ </section>}

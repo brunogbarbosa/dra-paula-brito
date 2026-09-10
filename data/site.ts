@@ -1,7 +1,7 @@
 export type Procedure = { name: string; description: string; image: string };
 export type Testimonial = { quote: string; name: string };
 export const site = {
-  name: 'Paula Brito', monogram: 'PB', headline: 'Sua beleza. Sua essência.', cro: 'CRO 12935',
+  name: 'Paula Brito', monogram: 'PB', headline: 'A beleza de ser você.', cro: 'CRO 12935',
   bio: 'Um olhar atento aos seus traços, à sua expressão e ao que faz sentido para você. A Dra. Paula Brito atua com harmonização facial em Recife e Surubim, com foco em valorizar a beleza natural e o equilíbrio do perfil.',
   education: [] as string[], specialties: ['Harmonização facial', 'Perfiloplastia'],
   phone: '', whatsapp: '', whatsappUrl: 'https://wa.me/message/Z7WMMEYKECDDD1',
@@ -9,7 +9,7 @@ export const site = {
   instagram: 'https://www.instagram.com/drapaulabrito_/', instagramHandle: '@drapaulabrito_',
   philosophy: ['BELEZA', 'COM', 'IDENTIDADE.'],
   colors: { paper: '#f6f2ea', ink: '#352c27', taupe: '#786856', champagne: '#c3a77b', dark: '#2d2823' },
-  images: { hero: '/images/paula-hero.webp', about: '/images/paula-clinica.webp', beauty: '/images/paula-cuidado.webp' },
+  images: { hero: '/images/paula-clinica.webp', about: '/images/paula-sorriso.webp', beauty: '/images/paula-cuidado.webp' },
   procedures: [
     { name: 'Perfiloplastia', description: 'Um olhar para a relação entre nariz, lábios e mento, respeitando as proporções do seu rosto.', image: '/images/resultado-perfil.webp' },
     { name: 'Preenchimento labial', description: 'Contorno e proporção em um planejamento que considera o desenho natural dos seus lábios.', image: '/images/resultado-labios.webp' },
