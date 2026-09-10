@@ -47,7 +47,7 @@ export function AuthorChapter() {
       <figure className={styles.photo} data-author-motion="photo">
         <Image
           src={site.images.about}
-          alt="Dra. Paula Brito em traje branco diante de um painel de madeira"
+          alt="Retrato da Dra. Paula Brito com blusa em tom malva"
           fill
           sizes="(max-width: 700px) 88vw, 46vw"
         />
