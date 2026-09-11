@@ -2,9 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
 import { createServiceClient, createUserClient } from '@/lib/supabase/server';
-import { requireSupabaseConfig } from '@/lib/supabase/config';
 
 export async function requestMagicLink(formData: FormData) {
   const email = String(formData.get('email') ?? '').trim().toLowerCase().slice(0, 254);
@@ -12,9 +10,9 @@ export async function requestMagicLink(formData: FormData) {
     try {
       const { data: staff } = await createServiceClient().from('staff_members').select('email').eq('email', email).maybeSingle();
       if (staff) {
-        const { url, publishableKey } = requireSupabaseConfig();
         const origin = (process.env.NEXT_PUBLIC_SITE_URL || 'https://drapaulabrito.vercel.app').replace(/\/$/, '');
-        await createClient(url, publishableKey).auth.signInWithOtp({ email, options: { emailRedirectTo: `${origin}/admin/auth/callback` } });
+        const client = await createUserClient();
+        await client.auth.signInWithOtp({ email, options: { emailRedirectTo: `${origin}/admin/auth/callback` } });
       }
     } catch (error) { console.error('admin magic link failed', error); }
   }
