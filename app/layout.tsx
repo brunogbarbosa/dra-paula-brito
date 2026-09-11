@@ -6,6 +6,7 @@ import './globals.css';
 import './signature.css';
 import './campaign.css';
 import './essence.css';
+import './booking.css';
 const editorial = localFont({src:'../public/fonts/editorial.ttf',variable:'--font-editorial',display:'swap',preload:true,weight:'100 900',fallback:['Georgia']});
 const modern = localFont({src:'../public/fonts/modern.ttf',variable:'--font-modern',display:'swap',preload:true,weight:'100 900',fallback:['Arial']});
 const metadataBase = new URL(site.seo.url || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000'));

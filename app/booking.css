@@ -1,0 +1,60 @@
+/* Shared booking treatment across the landing page and intake form. */
+.booking-cta.booking-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 56px;
+  max-width: 100%;
+  width: fit-content;
+  padding: 16px 26px;
+  border: 1px solid #96743f;
+  border-radius: 12px;
+  background: #d6b985;
+  color: #241e18;
+  box-shadow: 0 5px 0 #876b3b, 0 10px 24px #201c1726;
+  font: 600 15px/1.45 var(--sans);
+  letter-spacing: 0;
+  text-align: center;
+  text-decoration: none;
+  transition: background .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.booking-cta.booking-cta svg { flex-shrink: 0; width: 20px; height: 20px; }
+.booking-cta.booking-cta:hover:not(:disabled) {
+  background: #ead2a6;
+  color: #241e18;
+  box-shadow: 0 6px 0 #876b3b, 0 14px 28px #201c1730;
+  transform: translateY(-2px);
+}
+.booking-cta.booking-cta:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #876b3b;
+}
+.booking-cta.booking-cta:focus-visible {
+  outline: 3px solid #96743f;
+  outline-offset: 5px;
+  box-shadow: 0 0 0 3px #fff8ed, 0 5px 0 #876b3b;
+}
+.booking-cta.booking-cta:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+.campaign-cta.booking-cta { min-height: 64px; padding: 19px 30px; font-size: 16px; }
+.header .appointment.booking-cta { min-height: 48px; padding: 12px 18px; font-size: 13px; gap: 12px; flex-shrink: 0; }
+.footer .booking-cta { min-height: 52px; padding: 12px 16px; font-size: 14px; }
+@media(max-width:1100px) and (min-width:851px) {
+  .header .desktop-nav { gap: 13px; }
+  .header .appointment.booking-cta { padding-inline: 12px; font-size: 12px; }
+}
+@media(max-width:850px) { .header .header-cta.booking-cta { display: none; } }
+@media(max-width:700px) {
+  .campaign-cta.booking-cta { width: 100%; max-width: 360px; min-height: 62px; padding-inline: 20px; }
+  .procedure-description .booking-cta { width: 100%; padding-inline: 15px; font-size: 14px; }
+  .gallery-end .booking-cta { width: 100%; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .booking-cta.booking-cta { transition: none; }
+  .booking-cta.booking-cta:hover:not(:disabled), .booking-cta.booking-cta:active:not(:disabled) { transform: none; }
+}
