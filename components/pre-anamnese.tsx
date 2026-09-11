@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Check, CheckCheck, Copy, HeartHandshake, LockKeyhole, MessageCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, CheckCheck, Copy, Database, HeartHandshake, Loader2, LockKeyhole, MessageCircle } from 'lucide-react';
 import { site, appointmentUrl } from '@/data/site';
 import { emptyIntake, healthQuestions, intakeMessage, intakeSections, intakeWhatsAppUrl, type HealthId, type Intake } from '@/lib/pre-anamnese';
 import styles from './pre-anamnese.module.css';
@@ -16,10 +16,15 @@ export function PreAnamnese() {
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState('');
   const [manualCopy, setManualCopy] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [reference, setReference] = useState('');
   const heading = useRef<HTMLHeadingElement>(null);
   const copyArea = useRef<HTMLTextAreaElement>(null);
   const mounted = useRef(false);
-  useEffect(() => { setReady(true); }, []);
+  const submissionId = useRef('');
+  const startedAt = useRef(0);
+  useEffect(() => { submissionId.current = crypto.randomUUID(); startedAt.current = Date.now(); setReady(true); }, []);
   useEffect(() => {
     if (mounted.current) heading.current?.focus();
     mounted.current = true;
@@ -43,6 +48,18 @@ export function PreAnamnese() {
       setStatus('A cópia automática não ficou disponível. Selecione e copie o texto abaixo antes de abrir o WhatsApp.');
     }
   }
+  async function saveAnswers() {
+    if (!consent || saving || saved) return;
+    setSaving(true); setStatus('');
+    try {
+      const response = await fetch('/api/pre-anamnese', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ submissionId: submissionId.current, intake: data, consent, startedAt: startedAt.current, website: '' }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Não foi possível salvar agora.');
+      setSaved(true); setReference(result.reference || '');
+      setStatus('Pré-anamnese enviada com segurança para a equipe da Dra. Paula.');
+    } catch (error) { setStatus(error instanceof Error ? error.message : 'Não foi possível salvar agora. Tente novamente.'); }
+    finally { setSaving(false); }
+  }
   return <div className={styles.page}>
     <header className={styles.header}><a href="/" className={styles.brand} aria-label="Dra. Paula Brito, início"><span aria-hidden="true">PB</span><div>PAULA BRITO<small>HARMONIZAÇÃO FACIAL</small></div></a><a className={styles.backSite} href="/"><ArrowLeft size={16} /> Voltar ao site</a></header>
     <main id="pre-anamnese" className={styles.layout}>
@@ -64,7 +81,7 @@ export function PreAnamnese() {
           <noscript>Ative o JavaScript para preencher o formulário ou entre em contato com a equipe pelo link no rodapé.</noscript>
           {step < 3 ? <form onSubmit={submit} className={styles.form} inert={!ready}>
             {step === 0 && <>
-              <div className={styles.privacy}><LockKeyhole size={20} /><p>Suas respostas ficam apenas nesta página enquanto ela está aberta. Nada é enviado automaticamente. Ao final, você decide se quer compartilhá-las pelo WhatsApp.</p></div>
+              <div className={styles.privacy}><LockKeyhole size={20} /><p>Suas respostas permanecem nesta página durante o preenchimento. Elas só são armazenadas no sistema privado da clínica após sua revisão e autorização.</p></div>
               <label className={styles.field}>Como você se chama? *<input name="name" autoComplete="name" value={data.name} onChange={e => update('name', e.target.value)} required pattern=".*\S.*" maxLength={100} placeholder="Seu nome" /></label>
               <div className={styles.twoColumns}><label className={styles.field}>Sua idade *<input name="age" inputMode="numeric" type="number" min="1" max="120" step="1" required value={data.age} onChange={e => update('age', e.target.value)} placeholder="Em anos" /></label><label className={styles.field}>Onde deseja atendimento? *<select name="city" required value={data.city} onChange={e => update('city', e.target.value)}><option value="">Selecione</option><option>Recife</option><option>Surubim</option><option>Ainda não decidi</option></select></label></div>
               {Number(data.age) > 0 && Number(data.age) < 18 && <p className={styles.note}>Preencha com seu responsável e combine com a equipe a participação dele na avaliação.</p>}
@@ -81,19 +98,19 @@ export function PreAnamnese() {
             </>}
             <div className={styles.actions}>{step > 0 && <button type="button" className={styles.secondary} onClick={() => go(step - 1)}><ArrowLeft size={17} /> Voltar</button>}<button type="submit" className={styles.primary} disabled={!ready}>{step === 2 ? 'Revisar respostas' : 'Continuar'}<ArrowRight size={18} /></button></div>
           </form> : <div className={styles.review}>
-            {intakeSections(data).map((section, i) => <section className={styles.summary} key={section.title}><header><h3>{section.title}</h3><button type="button" onClick={() => go(i)}>Editar <ArrowUpRight size={14} /></button></header><dl>{section.fields.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>)}
-            <div className={styles.consentBox}><label><input type="checkbox" checked={consent} onChange={e => { setConsent(e.target.checked); setStatus(''); setManualCopy(false); }} /><span>Autorizo a Dra. Paula Brito e sua equipe a receber e utilizar estas informações, inclusive meus dados de saúde, para preparar meu atendimento.</span></label><p>O compartilhamento é opcional e ocorre pelo WhatsApp, sujeito à política de privacidade desse serviço. Você pode solicitar acesso, correção ou exclusão dos dados e revogar esta autorização pelo contato da clínica. <a className="booking-cta" href={appointmentUrl} target="_blank" rel="noreferrer">Falar com a equipe <ArrowUpRight size={14} aria-hidden="true" /></a></p></div>
-            <div className={styles.handoff}><MessageCircle size={25} /><h3>Vamos continuar<br /><em>pelo WhatsApp?</em></h3><p>{whatsappUrl ? 'A conversa será aberta com o resumo preenchido. Toque em enviar no WhatsApp para compartilhar.' : 'Copie suas respostas, abra a conversa da clínica e cole a mensagem para enviar.'}</p>
-              <button type="button" className={styles.secondary} disabled={!consent} onClick={copyAnswers}><Copy size={17} /> Copiar respostas</button>
-              {consent ? <a className={`${styles.primary} booking-cta`} href={whatsappUrl || appointmentUrl} target="_blank" rel="noreferrer" onClick={() => setStatus('A conversa foi solicitada. O envio só acontece quando você confirmar no WhatsApp.')}><MessageCircle size={18} /> Abrir WhatsApp <ArrowUpRight size={17} /></a> : <button type="button" className={`${styles.primary} booking-cta`} disabled><MessageCircle size={18} /> Abrir WhatsApp</button>}
-              {!consent && <small>Marque a autorização acima para compartilhar.</small>}
+            {intakeSections(data).map((section, i) => <section className={styles.summary} key={section.title}><header><h3>{section.title}</h3>{!saved && <button type="button" onClick={() => go(i)}>Editar <ArrowUpRight size={14} /></button>}</header><dl>{section.fields.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>)}
+            <div className={styles.consentBox}><label><input type="checkbox" disabled={saved} checked={consent} onChange={e => { setConsent(e.target.checked); setStatus(''); setManualCopy(false); }} /><span>Autorizo a Dra. Paula Brito e sua equipe a armazenar e utilizar estas informações, inclusive meus dados de saúde, exclusivamente para preparar e acompanhar meu atendimento.</span></label><p>Os dados serão guardados no sistema privado da clínica. O envio ao WhatsApp é uma etapa separada e opcional, sujeita à política de privacidade desse serviço. Você pode solicitar acesso, correção ou exclusão dos dados e revogar esta autorização pelo contato da clínica. <a className="booking-cta" href={appointmentUrl} target="_blank" rel="noreferrer">Falar com a equipe <ArrowUpRight size={14} aria-hidden="true" /></a></p></div>
+            <div className={styles.handoff}>{saved ? <CheckCheck size={27} /> : <Database size={25} />}<h3>{saved ? <>Tudo certo,<br /><em>recebemos seus dados.</em></> : <>Enviar para<br /><em>a Dra. Paula.</em></>}</h3><p>{saved ? `Seu registro foi salvo${reference ? ` com a referência ${reference.toUpperCase()}` : ''}. Se quiser, continue a conversa pelo WhatsApp.` : 'Ao enviar, a equipe poderá consultar suas respostas no painel privado e preparar melhor o seu atendimento.'}</p>
+              {!saved && <button type="button" className={`${styles.primary} booking-cta`} disabled={!consent || saving} onClick={saveAnswers}>{saving ? <Loader2 className={styles.spinner} size={18} /> : <Database size={18} />} {saving ? 'Enviando…' : 'Enviar pré-anamnese'} <ArrowUpRight size={17} /></button>}
+              {saved && <><button type="button" className={styles.secondary} onClick={copyAnswers}><Copy size={17} /> Copiar respostas</button><a className={`${styles.primary} booking-cta`} href={whatsappUrl || appointmentUrl} target="_blank" rel="noreferrer"><MessageCircle size={18} /> Continuar no WhatsApp <ArrowUpRight size={17} /></a></>}
+              {!consent && !saved && <small>Marque a autorização acima para enviar.</small>}
               <p role="status" className={styles.status}>{status && <><CheckCheck size={18} />{status}</>}</p>
               {manualCopy && consent && <label className={styles.field}>Resumo para copiar<textarea ref={copyArea} readOnly rows={10} value={message} onFocus={e => e.currentTarget.select()} /><button type="button" className={styles.secondary} onClick={() => { copyArea.current?.focus(); copyArea.current?.select(); }}>Selecionar texto</button></label>}
             </div>
-            <button type="button" className={styles.secondary} onClick={() => go(2)}><ArrowLeft size={17} /> Voltar ao histórico</button>
+            {!saved && <button type="button" className={styles.secondary} onClick={() => go(2)}><ArrowLeft size={17} /> Voltar ao histórico</button>}
           </div>}
         </div>
-        <footer className={styles.formFooter}><LockKeyhole size={14} /><span>Sem envio automático ou salvamento no site. Recarregar esta página apaga as respostas.</span></footer>
+        <footer className={styles.formFooter}><LockKeyhole size={14} /><span>O envio só acontece após sua autorização. As respostas são armazenadas no sistema privado da clínica.</span></footer>
       </div>
     </main>
     <footer className={styles.footer}><span>DRA. PAULA BRITO · {site.cro}</span><a className="booking-cta" href={appointmentUrl} target="_blank" rel="noreferrer">Prefere conversar com a equipe? <ArrowUpRight size={15} /></a></footer>
