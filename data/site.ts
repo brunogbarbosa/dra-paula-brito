@@ -9,7 +9,7 @@ export const site = {
   instagram: 'https://www.instagram.com/drapaulabrito_/', instagramHandle: '@drapaulabrito_',
   philosophy: ['BELEZA', 'COM', 'IDENTIDADE.'],
   colors: { paper: '#f6f2ea', ink: '#352c27', taupe: '#786856', champagne: '#c3a77b', dark: '#2d2823' },
-  images: { hero: '/images/paula-clinica.webp', about: '/images/paula-por-tras-do-cuidado.webp', beauty: '/images/paula-cuidado.webp' },
+  images: { hero: '/images/paula-clinica-hq.webp', about: '/images/paula-por-tras-do-cuidado.webp', beauty: '/images/paula-cuidado.webp' },
   procedures: [
     { name: 'Perfiloplastia', description: 'Um olhar para a relação entre nariz, lábios e mento, respeitando as proporções do seu rosto.', image: '/images/resultado-perfil.webp' },
     { name: 'Preenchimento labial', description: 'Contorno e proporção em um planejamento que considera o desenho natural dos seus lábios.', image: '/images/resultado-labios.webp' },
