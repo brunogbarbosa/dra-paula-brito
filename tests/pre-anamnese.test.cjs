@@ -7,7 +7,7 @@ const ts = require('typescript');
 const source = fs.readFileSync(path.join(__dirname, '../lib/pre-anamnese.ts'), 'utf8');
 const context = { exports: {} };
 vm.runInNewContext(ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText, context);
-const { emptyIntake, intakeMessage, intakeWhatsAppUrl, healthQuestions } = context.exports;
+const { emptyIntake, formatBrazilPhone, intakeMessage, intakeWhatsAppUrl, healthQuestions, normalizeBrazilPhone } = context.exports;
 
 test('unanswered health questions are not presented as negative answers', () => {
   const message = intakeMessage(emptyIntake());
@@ -17,17 +17,25 @@ test('unanswered health questions are not presented as negative answers', () => 
 test('review message preserves patient text, selected treatments and authorization', () => {
   const data = emptyIntake();
   data.name = '  Pessoa de teste  ';
+  data.whatsapp = '81987654321';
   data.age = '35'; data.city = 'Recife';
   data.interests = ['Lipo de papada', 'Rejuvenescimento facial'];
   data.objective = 'Quero conversar & entender minhas opções.';
   data.health.allergies = { answer: 'Sim', detail: 'Informação de teste\nSegunda linha' };
   const message = intakeMessage(data);
   assert.ok(message.includes('Nome: Pessoa de teste\n'));
+  assert.ok(message.includes('WhatsApp: (81) 98765-4321'));
   assert.ok(message.includes('Idade: 35 anos'));
   assert.ok(message.includes(data.interests.join(', ')));
   assert.ok(message.includes(data.objective));
   assert.ok(message.includes('Sim — Informação de teste\nSegunda linha'));
   assert.ok(message.includes('Autorizo a Dra. Paula Brito'));
+});
+test('Brazilian WhatsApp numbers are normalized for storage and contact', () => {
+  assert.equal(normalizeBrazilPhone('(81) 98765-4321'), '5581987654321');
+  assert.equal(normalizeBrazilPhone('+55 81 98765-4321'), '5581987654321');
+  assert.equal(formatBrazilPhone('5581987654321'), '(81) 98765-4321');
+  assert.equal(normalizeBrazilPhone('123'), '');
 });
 test('a withdrawn affirmative answer does not leak its old details', () => {
   const data = emptyIntake();

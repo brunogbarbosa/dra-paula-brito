@@ -7,13 +7,25 @@ export const healthQuestions = [
 ] as const;
 export type HealthId = typeof healthQuestions[number]['id'];
 export type HealthAnswer = { answer: string; detail: string };
-export type Intake = { name: string; age: string; city: string; interests: string[]; objective: string; health: Record<HealthId, HealthAnswer>; notes: string };
+export type Intake = { name: string; whatsapp: string; age: string; city: string; interests: string[]; objective: string; health: Record<HealthId, HealthAnswer>; notes: string };
 export function emptyIntake(): Intake {
-  return { name: '', age: '', city: '', interests: [], objective: '', health: Object.fromEntries(healthQuestions.map(q => [q.id, { answer: '', detail: '' }])) as Intake['health'], notes: '' };
+  return { name: '', whatsapp: '', age: '', city: '', interests: [], objective: '', health: Object.fromEntries(healthQuestions.map(q => [q.id, { answer: '', detail: '' }])) as Intake['health'], notes: '' };
+}
+export function normalizeBrazilPhone(value: string) {
+  let digits = value.replace(/\D/g, '');
+  if (digits.length === 10 || digits.length === 11) digits = `55${digits}`;
+  return /^55\d{10,11}$/.test(digits) ? digits : '';
+}
+export function formatBrazilPhone(value: string) {
+  const local = value.replace(/\D/g, '').replace(/^55(?=\d{10,11}$)/, '').slice(0, 11);
+  if (local.length <= 2) return local;
+  if (local.length <= 6) return `(${local.slice(0, 2)}) ${local.slice(2)}`;
+  if (local.length <= 10) return `(${local.slice(0, 2)}) ${local.slice(2, 6)}-${local.slice(6)}`;
+  return `(${local.slice(0, 2)}) ${local.slice(2, 7)}-${local.slice(7)}`;
 }
 export function intakeSections(data: Intake) {
   return [
-    { title: 'Sobre você', fields: [['Nome', data.name.trim()], ['Idade', `${data.age} anos`], ['Atendimento', data.city]] },
+    { title: 'Sobre você', fields: [['Nome', data.name.trim()], ['WhatsApp', formatBrazilPhone(data.whatsapp)], ['Idade', `${data.age} anos`], ['Atendimento', data.city]] },
     { title: 'Seus objetivos', fields: [['Interesses', data.interests.join(', ') || 'Quero orientação na avaliação'], ['O que gostaria de cuidar', data.objective.trim() || 'Prefiro conversar na consulta']] },
     { title: 'Seu histórico', fields: [...healthQuestions.map(q => {
       const value = data.health[q.id];

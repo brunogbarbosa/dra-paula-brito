@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, CheckCheck, Copy, Database, HeartHandshake, Loader2, LockKeyhole, MessageCircle } from 'lucide-react';
 import { site, appointmentUrl } from '@/data/site';
-import { emptyIntake, healthQuestions, intakeMessage, intakeSections, intakeWhatsAppUrl, type HealthId, type Intake } from '@/lib/pre-anamnese';
+import { emptyIntake, formatBrazilPhone, healthQuestions, intakeMessage, intakeSections, intakeWhatsAppUrl, type HealthId, type Intake } from '@/lib/pre-anamnese';
 import styles from './pre-anamnese.module.css';
 
 const steps = ['Sobre você', 'Seus objetivos', 'Seu histórico', 'Revisar e enviar'];
@@ -83,6 +83,7 @@ export function PreAnamnese() {
             {step === 0 && <>
               <div className={styles.privacy}><LockKeyhole size={20} /><p>Suas respostas permanecem nesta página durante o preenchimento. Elas só são armazenadas no sistema privado da clínica após sua revisão e autorização.</p></div>
               <label className={styles.field}>Como você se chama? *<input name="name" autoComplete="name" value={data.name} onChange={e => update('name', e.target.value)} required pattern=".*\S.*" maxLength={100} placeholder="Seu nome" /></label>
+              <label className={styles.field}>Seu WhatsApp com DDD *<input name="whatsapp" autoComplete="tel" inputMode="tel" type="tel" value={formatBrazilPhone(data.whatsapp)} onChange={e => { const digits = e.target.value.replace(/\D/g, ''); update('whatsapp', (digits.startsWith('55') && digits.length > 11 ? digits.slice(2) : digits).slice(0, 11)); }} required pattern="\(?\d{2}\)?\s?\d{4,5}-?\d{4}" maxLength={15} placeholder="(81) 99999-9999" /></label>
               <div className={styles.twoColumns}><label className={styles.field}>Sua idade *<input name="age" inputMode="numeric" type="number" min="1" max="120" step="1" required value={data.age} onChange={e => update('age', e.target.value)} placeholder="Em anos" /></label><label className={styles.field}>Onde deseja atendimento? *<select name="city" required value={data.city} onChange={e => update('city', e.target.value)}><option value="">Selecione</option><option>Recife</option><option>Surubim</option><option>Ainda não decidi</option></select></label></div>
               {Number(data.age) > 0 && Number(data.age) < 18 && <p className={styles.note}>Preencha com seu responsável e combine com a equipe a participação dele na avaliação.</p>}
               <p className={styles.note}>Esta é uma conversa inicial. O formulário não substitui a consulta, não confirma agendamento e não define a indicação de tratamentos.</p>
