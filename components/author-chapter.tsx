@@ -48,8 +48,9 @@ export function AuthorChapter() {
         <Image
           src={site.images.about}
           alt="Retrato da Dra. Paula Brito com roupa branca e as mãos próximas ao rosto"
-          fill
-          sizes="(max-width: 700px) 88vw, 46vw"
+          width={852}
+          height={1280}
+          sizes="(max-width: 590px) 88vw, (max-width: 700px) 520px, (max-width: 1170px) 45vw, 520px"
         />
       </figure>
 
