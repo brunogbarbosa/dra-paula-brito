@@ -10,3 +10,14 @@
 @keyframes hero-settle{from{transform:translateY(14px)}to{transform:translateY(0)}}
 @media(min-width:701px) and (prefers-reduced-motion:no-preference){.campaign-original{animation:hero-photo-settle 1.6s cubic-bezier(.2,.7,.2,1) both}}
 @keyframes hero-photo-settle{from{transform:scale(1.025)}to{transform:scale(1)}}
+
+.campaign-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:29px}
+.campaign-actions .campaign-cta{margin-top:0}
+.campaign-intake-cta{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:64px;padding:19px 25px;border:1px solid #d6b985;border-radius:12px;background:#f6f2ea;color:#30271e;box-shadow:0 5px 0 #a4906b;font:600 16px/1.45 var(--sans);text-decoration:none;transition:background .2s,transform .2s,box-shadow .2s}
+.campaign-intake-cta svg{flex-shrink:0}
+.campaign-intake-cta:hover{background:#fff8eb;transform:translateY(-2px);box-shadow:0 6px 0 #a4906b}
+.campaign-intake-cta:active{transform:translateY(3px);box-shadow:0 2px 0 #a4906b}
+.campaign-intake-cta:focus-visible{outline:3px solid #d6b985;outline-offset:5px}
+@media(max-width:700px){.campaign-actions{max-width:360px;margin-top:24px;gap:16px}.campaign-intake-cta{width:100%;min-height:62px;padding-inline:20px}}
+@media(prefers-reduced-motion:no-preference){.campaign-intake-cta{animation-delay:.24s!important}}
+@media(prefers-reduced-motion:reduce){.campaign-intake-cta{transition:none}.campaign-intake-cta:hover,.campaign-intake-cta:active{transform:none}}

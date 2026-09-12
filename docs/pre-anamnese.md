@@ -1,6 +1,6 @@
 # Pré-anamnese
 
-Rota pública: `/pre-anamnese`, acessível pelo menu principal, menu mobile e rodapé. A rota tem `noindex` para não aparecer como página de conteúdo nos buscadores.
+Rota pública: `/pre-anamnese`, acessível pelo botão no hero, menu principal, menu mobile e rodapé. A rota tem `noindex` para não aparecer como página de conteúdo nos buscadores.
 
 O fluxo possui quatro etapas: identificação, objetivos, histórico opcional e revisão. Nome, idade e local de atendimento são obrigatórios. Perguntas não respondidas aparecem no resumo como “Prefiro conversar na consulta”, nunca como respostas negativas. Alterações invalidam a autorização anterior de compartilhamento.
 
