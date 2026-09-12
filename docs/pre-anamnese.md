@@ -8,7 +8,7 @@ Enquanto a pessoa preenche, as respostas ficam apenas no estado React da página
 
 Após o salvamento, o paciente pode abrir o WhatsApp com a mensagem preenchida ou copiar o resumo. O envio ao WhatsApp é confirmado pelo próprio paciente; o site não tem confirmação de entrega. Se o link ultrapassar 7.000 caracteres, a interface orienta copiar e colar para evitar truncamento. Se o acesso à área de transferência falhar, o resumo fica disponível para seleção manual.
 
-O destinatário é `site.whatsapp` em `data/site.ts`, atualmente `5581995702164`. Os textos das perguntas ficam em `lib/pre-anamnese.ts`; interface e estilos em `components/pre-anamnese.*`. A pré-anamnese prepara a conversa e não fornece diagnóstico, indicação de procedimento ou confirmação de consulta.
+O destinatário é `site.whatsapp` em `data/site.ts`, atualmente `5581985877074`. Os textos das perguntas ficam em `lib/pre-anamnese.ts`; interface e estilos em `components/pre-anamnese.*`. A pré-anamnese prepara a conversa e não fornece diagnóstico, indicação de procedimento ou confirmação de consulta.
 
 A clínica administra os registros pelo painel privado `/admin`, protegido por e-mail, senha e pelas políticas de acesso do Supabase. O texto de autorização limita o uso à preparação e ao acompanhamento do atendimento e informa o canal para solicitar acesso, correção, exclusão ou revogação.
 

@@ -36,16 +36,16 @@ test('a withdrawn affirmative answer does not leak its old details', () => {
 });
 test('WhatsApp link targets the clinic and safely encodes accents and punctuation', () => {
   const text = 'Nome: Teste de integração\nObservação: A&B + #1?';
-  const url = new URL(intakeWhatsAppUrl('+55 (81) 99570-2164', text));
+  const url = new URL(intakeWhatsAppUrl('+55 (81) 98587-7074', text));
   assert.equal(url.origin, 'https://wa.me');
-  assert.equal(url.pathname, '/5581995702164');
+  assert.equal(url.pathname, '/5581985877074');
   assert.equal(url.searchParams.get('text'), text);
   assert.equal([...url.searchParams.keys()].length, 1);
 });
 test('missing recipient and long histories select the manual copy flow', () => {
   assert.equal(intakeWhatsAppUrl('', 'teste'), null);
   assert.equal(intakeWhatsAppUrl('123', 'teste'), null);
-  assert.equal(intakeWhatsAppUrl('5581995702164', 'á'.repeat(2000)), null);
+  assert.equal(intakeWhatsAppUrl('5581985877074', 'á'.repeat(2000)), null);
 });
 test('new form instances do not reuse previous patient data', () => {
   const first = emptyIntake();

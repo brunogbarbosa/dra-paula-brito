@@ -4,7 +4,7 @@ export const site = {
   name: 'Paula Brito', monogram: 'PB', headline: 'A beleza de ser você.', cro: 'CRO 12935',
   bio: 'Um olhar atento aos seus traços, à sua expressão e ao que faz sentido para você. A Dra. Paula Brito atua com harmonização facial em Recife e Surubim, com foco em valorizar a beleza natural e o equilíbrio do perfil.',
   education: [] as string[], specialties: ['Harmonização facial', 'Perfiloplastia'],
-  phone: '(81) 99570-2164', whatsapp: '5581995702164', whatsappUrl: '',
+  phone: '(81) 98587-7074', whatsapp: '5581985877074', whatsappUrl: '',
   address: 'Recife e Surubim · Pernambuco', professionalPhilosophy: 'Realçando a sua beleza natural.',
   instagram: 'https://www.instagram.com/drapaulabrito_/', instagramHandle: '@drapaulabrito_',
   philosophy: ['BELEZA', 'COM', 'IDENTIDADE.'],
