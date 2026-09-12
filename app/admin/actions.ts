@@ -2,21 +2,27 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createServiceClient, createUserClient } from '@/lib/supabase/server';
+import { createUserClient } from '@/lib/supabase/server';
 
-export async function requestMagicLink(formData: FormData) {
+export async function signIn(formData: FormData) {
   const email = String(formData.get('email') ?? '').trim().toLowerCase().slice(0, 254);
-  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    try {
-      const { data: staff } = await createServiceClient().from('staff_members').select('email').eq('email', email).maybeSingle();
-      if (staff) {
-        const origin = (process.env.NEXT_PUBLIC_SITE_URL || 'https://drapaulabrito.vercel.app').replace(/\/$/, '');
-        const client = await createUserClient();
-        await client.auth.signInWithOtp({ email, options: { emailRedirectTo: `${origin}/admin/auth/callback` } });
-      }
-    } catch (error) { console.error('admin magic link failed', error); }
+  const password = String(formData.get('password') ?? '').slice(0, 128);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || password.length < 8) redirect('/admin?erro=credenciais');
+  try {
+    const client = await createUserClient();
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
+    if (error || !data.user?.email) redirect('/admin?erro=credenciais');
+    const { data: staff } = await client.from('staff_members').select('email').eq('email', data.user.email.toLowerCase()).maybeSingle();
+    if (!staff) {
+      await client.auth.signOut();
+      redirect('/admin?erro=acesso');
+    }
+  } catch (error) {
+    if (error && typeof error === 'object' && 'digest' in error) throw error;
+    console.error('admin password sign in failed', error);
+    redirect('/admin?erro=credenciais');
   }
-  redirect('/admin?enviado=1');
+  redirect('/admin');
 }
 
 export async function updateStatus(formData: FormData) {

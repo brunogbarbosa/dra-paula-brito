@@ -10,6 +10,6 @@ Após o salvamento, o paciente pode abrir o WhatsApp com a mensagem preenchida o
 
 O destinatário é `site.whatsapp` em `data/site.ts`, atualmente `5581995702164`. Os textos das perguntas ficam em `lib/pre-anamnese.ts`; interface e estilos em `components/pre-anamnese.*`. A pré-anamnese prepara a conversa e não fornece diagnóstico, indicação de procedimento ou confirmação de consulta.
 
-A clínica administra os registros pelo painel privado `/admin`, protegido por login por e-mail e pelas políticas de acesso do Supabase. O texto de autorização limita o uso à preparação e ao acompanhamento do atendimento e informa o canal para solicitar acesso, correção, exclusão ou revogação.
+A clínica administra os registros pelo painel privado `/admin`, protegido por e-mail, senha e pelas políticas de acesso do Supabase. O texto de autorização limita o uso à preparação e ao acompanhamento do atendimento e informa o canal para solicitar acesso, correção, exclusão ou revogação.
 
 Validação: `npm test` verifica composição do resumo, omissão de detalhes retirados pelo paciente, tratamento de perguntas não respondidas, isolamento entre formulários, destinatário, codificação e limite do link de WhatsApp. `npm run build` valida TypeScript e gera as páginas estáticas.

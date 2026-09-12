@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { CalendarDays, ChevronRight, ClipboardList, LogOut, Search, ShieldCheck, UserRound } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { createUserClient } from '@/lib/supabase/server';
-import { requestMagicLink, signOut, updateStatus } from './actions';
+import { signIn, signOut, updateStatus } from './actions';
 import styles from './admin.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -17,7 +17,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   let client;
   try { client = await createUserClient(); } catch { return <Login unavailable />; }
   const { data: { user } } = await client.auth.getUser();
-  if (!user?.email) return <Login sent={params.enviado === '1'} error={params.erro === 'acesso'} />;
+  if (!user?.email) return <Login error={typeof params.erro === 'string' ? params.erro : ''} />;
   const { data: staff } = await client.from('staff_members').select('email').eq('email', user.email.toLowerCase()).maybeSingle();
   if (!staff) redirect('/admin/auth/unauthorized');
   const status = typeof params.status === 'string' && statusLabels[params.status] ? params.status : 'todos';
@@ -35,6 +35,6 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
     </main></div>;
 }
 
-function Login({ sent = false, error = false, unavailable = false }: { sent?: boolean; error?: boolean; unavailable?: boolean }) {
-  return <main className={styles.login}><section><div className={styles.loginMark}>PB</div><span>ÁREA DA DRA. PAULA</span><h1>Acesso às<br /><em>pré-anamneses.</em></h1><p>Entre com o e-mail autorizado. Você receberá um link seguro e temporário.</p>{sent && <div className={styles.notice}>Se este e-mail estiver autorizado, o link de acesso chegará em alguns instantes.</div>}{error && <div className={styles.error}>Este acesso não é válido ou não está autorizado.</div>}{unavailable ? <div className={styles.error}>O painel ainda está sendo configurado.</div> : <form action={requestMagicLink}><label>E-mail<input name="email" type="email" autoComplete="email" required placeholder="seu@email.com" /></label><button>Receber link de acesso</button></form>}<a href="/">Voltar ao site</a></section></main>;
+function Login({ error = '', unavailable = false }: { error?: string; unavailable?: boolean }) {
+  return <main className={styles.login}><section><div className={styles.loginMark}>PB</div><span>ÁREA DA DRA. PAULA</span><h1>Acesso às<br /><em>pré-anamneses.</em></h1><p>Entre com o e-mail e a senha cadastrados para acessar o painel privado.</p>{error && <div className={styles.error}>{error === 'credenciais' ? 'E-mail ou senha incorretos.' : 'Este acesso não está autorizado.'}</div>}{unavailable ? <div className={styles.error}>O painel ainda está sendo configurado.</div> : <form action={signIn}><label>E-mail<input name="email" type="email" autoComplete="username" required placeholder="seu@email.com" /></label><label>Senha<input name="password" type="password" autoComplete="current-password" minLength={8} required placeholder="Sua senha" /></label><button>Entrar no painel</button></form>}<a href="/">Voltar ao site</a></section></main>;
 }
